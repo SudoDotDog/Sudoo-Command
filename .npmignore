@@ -1,0 +1,14 @@
+# Builds
+src
+makefile
+typescript
+tsconfig.json
+
+# Tests
+test
+
+# Configs
+.vscode
+.travis.yml
+.gitignore
+package-lock.json

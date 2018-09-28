@@ -1,0 +1,38 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "baseUrl": "../src",
+        "downlevelIteration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "inlineSourceMap": true,
+        "lib": [
+            "es2016",
+            "es6"
+        ],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "outDir": "../dist",
+        "paths": {
+            "#declare/*": ["declare/*"],
+            "#parser/*": ["parser/*"],
+            "#util/*": ["util/*"],
+        },
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "target": "es5",
+    },
+    "exclude": [
+        "node_modules",
+        "test"
+    ],
+    "include": [
+        "../src/**/*"
+    ]
+}
