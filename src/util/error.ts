@@ -5,12 +5,14 @@
  */
 
 export enum ERROR_CODE {
+    UNKNOWN_ERROR = 1000,
     INTERNAL_ERROR = 9001,
 }
 
 export const errorList: {
     [key: number]: string;
 } = {
+    1000: 'Unknown error',
     9001: 'Internal error',
 };
 
