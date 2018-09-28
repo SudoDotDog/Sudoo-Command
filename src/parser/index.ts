@@ -6,6 +6,8 @@
 
 import { ICommand } from "#declare/command";
 import { splitInput } from "#parser/input";
+import { car, cdr } from "#util/array";
+import { assert } from "#util/assert";
 
 export class Parser {
     private _input: string;
@@ -23,9 +25,12 @@ export class Parser {
             };
         }
 
+        const command: string = assert(car(raw)).exist().value();
+        const args: string[] = assert(cdr(raw)).exist().value();
+
         return {
-            command: '',
-            args: [],
+            command,
+            args,
         };
     }
 }

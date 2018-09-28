@@ -1,7 +1,7 @@
 /**
  * @author WMXPY
- * @namespace Util_Error
- * @description Index
+ * @namespace Util
+ * @description Error
  */
 
 export enum ERROR_CODE {
