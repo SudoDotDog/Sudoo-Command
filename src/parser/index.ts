@@ -16,6 +16,10 @@ export class Parser {
         this._input = input;
     }
 
+    public get input(): string {
+        return this._input;
+    }
+
     public raw(): ICommand {
         const raw: string[] = splitInput(this._input);
         if (raw.length <= 0) {

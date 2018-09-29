@@ -1,6 +1,7 @@
 /**
  * @author WMXPY
- * @description Util Error Test
+ * @namespace Util
+ * @description Error Test
  */
 
 require('../../src/binding');
