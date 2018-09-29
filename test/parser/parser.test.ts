@@ -5,7 +5,7 @@
  */
 
 require('../../src/binding');
-import { Parser } from '#parser/index';
+import { Parser } from '#parser/parser';
 import { expect } from 'chai';
 import * as Chance from 'chance';
 

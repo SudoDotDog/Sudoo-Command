@@ -1,7 +1,7 @@
 /**
  * @author WMXPY
  * @namespace Parser
- * @description Index
+ * @description Parser
  */
 
 import { ICommand } from "#declare/command";
