@@ -8,7 +8,7 @@ require('../../src/binding');
 import { error, ERROR_CODE } from '#util/error';
 import { expect } from 'chai';
 
-describe('test error utils', (): void => {
+describe('Given Error function', (): void => {
     describe('test error generators', (): void => {
         it('error a error code should return target error', (): void => {
             const result = error(ERROR_CODE.UNKNOWN_ERROR);

@@ -18,6 +18,7 @@
         "paths": {
             "#declare/*": ["declare/*"],
             "#parser/*": ["parser/*"],
+            "#pattern/*": ["pattern/*"],
             "#util/*": ["util/*"],
         },
         "removeComments": true,

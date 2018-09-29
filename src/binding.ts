@@ -15,6 +15,7 @@ import * as Path from 'path';
     ModuleAlias.addAliases({
         "#declare": Path.join(here, 'declare'),
         "#parser": Path.join(here, 'parser'),
+        "#pattern": Path.join(here, 'pattern'),
         "#util": Path.join(here, 'util'),
     });
 })(process.env.NODE_MODULE_ALIAS_SUDOO, process.env.NODE_ENV === 'test');
