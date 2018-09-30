@@ -77,6 +77,7 @@ export class Parser {
                 }
                 return null;
             }, null);
+        assert(pattern.verify()).to.be.true(ERROR_CODE.INSUFFICIENT_ARGUMENT);
         return result;
     }
 

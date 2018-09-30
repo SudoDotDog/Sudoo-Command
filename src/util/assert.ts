@@ -12,11 +12,26 @@ class Assert<T> {
         this._element = element;
     }
 
+    public get be(): Assert<T> {
+        return this;
+    }
+
+    public get to(): Assert<T> {
+        return this;
+    }
+
     public exist(code?: ERROR_CODE): Assert<T> {
         if (this._element !== null && this._element !== undefined) {
             return this;
         }
         throw error(code || ERROR_CODE.INTERNAL_ERROR);
+    }
+
+    public true(code?: ERROR_CODE): Assert<T> {
+        if (!Boolean(this._element)) {
+            throw error(code || ERROR_CODE.INTERNAL_ERROR);
+        }
+        return this;
     }
 
     public value(): T {

@@ -72,6 +72,10 @@ export class Pattern {
         };
     }
 
+    public verify(): boolean {
+        return this._args.length === 0;
+    }
+
     public clone(): Pattern {
         return new Pattern(this._args, this._options);
     }
