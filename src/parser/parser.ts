@@ -44,22 +44,22 @@ export class Parser {
         const raw: string[] = splitInput(this._input);
         const emptyString: string = '';
         if (raw.length <= 0) return emptyString;
-
         const command: string = assert(car(raw)).exist().value();
         return command;
     }
 
-    public args<T>(pattern: Pattern): { [P in keyof T]?: string } {
+    public args<T>(pattern: Pattern): { [P in keyof T]: string } { // TODO - FINISH ME
         const raw: string[] = splitInput(this._input);
-        const empty: { [P in keyof T]?: string } = {};
+        const empty: { [P in keyof T]: string } = {} as { [P in keyof T]: string };
         if (raw.length <= 0) return empty;
 
+        const result: { [P in keyof T]: string } = {} as { [P in keyof T]: string };
         const args: string[] = assert(cdr(raw)).exist().value();
         args.forEach((arg: string) => {
             const current: IPatternArg | IPatternOption = pattern.match(arg);
 
         });
-        return {};
+        return result;
     }
 }
 
