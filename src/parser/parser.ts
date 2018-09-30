@@ -26,9 +26,11 @@ export class Parser {
 
     public raw(): IRawCommand {
         const raw: string[] = splitInput(this._input);
+        const emptyString: string = '';
+
         if (raw.length <= 0) {
             return {
-                command: '',
+                command: emptyString,
                 args: [],
             };
         }
@@ -42,20 +44,26 @@ export class Parser {
         };
     }
 
-    public command(): string {
+    public command(optionOnly?: boolean): string {
         const raw: string[] = splitInput(this._input);
         const emptyString: string = '';
+
         if (raw.length <= 0) return emptyString;
         const command: string = assert(car(raw)).exist().value();
+        if (optionOnly && command.substring(0, 1) === '-') return emptyString;
         return command;
     }
 
-    public args<T>(pattern: Pattern): { [P in keyof T]: any } {
+    public args<T>(pattern: Pattern, optionOnly?: boolean): { [P in keyof T]: any } {
         const raw: string[] = splitInput(this._input);
         const empty: { [P in keyof T]: any } = {} as { [P in keyof T]: any };
         if (raw.length <= 0) return empty;
 
-        const args: string[] = assert(cdr(raw)).exist().value();
+        const command: string = this.command(optionOnly);
+        const args: string[] =
+            command ?
+                assert(cdr(raw)).exist().value() :
+                assert(raw).exist().value();
 
         const builder: Builder<T> = new Builder<T>();
         const reducer = this._createReducer<T>(builder, pattern);

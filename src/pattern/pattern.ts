@@ -39,6 +39,16 @@ export class Pattern {
         return this;
     }
 
+    public isOption(name: string): boolean {
+        for (const option of this._options) {
+            if (option.symbol === name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * SIDE EFFECT
      *

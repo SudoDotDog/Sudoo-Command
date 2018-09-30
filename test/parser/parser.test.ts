@@ -96,7 +96,7 @@ describe('Given a <Parser> Class', (): void => {
             ];
 
             const parser: Parser = new Parser(list.join(' '));
-            const command: string = parser.command();
+            const command: string = parser.command(true);
 
             expect(command).to.be.equal(str);
 
@@ -112,6 +112,34 @@ describe('Given a <Parser> Class', (): void => {
                 'test-arg-2': arg2,
                 'test-option-1': option1,
                 'test-option-2': true,
+            });
+        });
+
+        it('should able to handle option only situation', (): void => {
+            const option1: string = chance.string();
+
+            const pattern: Pattern = new Pattern();
+            pattern.option('boolean', '-b', PATTERN_TYPE.BOOLEAN);
+            pattern.option('string', '-s', PATTERN_TYPE.STRING);
+            const list: any[] = [
+                '-b',
+                '-s',
+                option1,
+            ];
+
+            const parser: Parser = new Parser(list.join(' '));
+            const command: string = parser.command(true);
+
+            expect(command).to.be.equal('');
+
+            const args = parser.args<{
+                boolean: boolean;
+                string: string;
+            }>(pattern, true);
+
+            expect(args).to.be.deep.equal({
+                boolean: true,
+                string: option1,
             });
         });
 
@@ -132,7 +160,7 @@ describe('Given a <Parser> Class', (): void => {
             ];
 
             const parser: Parser = new Parser(list.join(' '));
-            const command: string = parser.command();
+            const command: string = parser.command(true);
 
             expect(command).to.be.equal(str);
 
@@ -163,7 +191,7 @@ describe('Given a <Parser> Class', (): void => {
             ];
 
             const parser: Parser = new Parser(list.join(' '));
-            const command: string = parser.command();
+            const command: string = parser.command(true);
 
             expect(command).to.be.equal(str);
 

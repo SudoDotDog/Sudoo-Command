@@ -17,6 +17,10 @@ dev:
 	@echo "[INFO] Building for development"
 	@$(tsc) --p $(dev)
 
+build:
+	@echo "[INFO] Building for production"
+	@$(tsc) --p $(build)
+
 tests:
 	@echo "[INFO] Testing with Mocha"
 ifeq ($(OS), Windows_NT)
