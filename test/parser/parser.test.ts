@@ -170,7 +170,7 @@ describe('Given a <Parser> Class', (): void => {
                     'test-arg-2': number;
                     'test-option-1': string;
                     'test-option-2': boolean;
-                }>(pattern);
+                }>(pattern, true);
             };
 
             expect(execute).to.be.throw('3425: Option is used');
@@ -201,7 +201,7 @@ describe('Given a <Parser> Class', (): void => {
                     'test-arg-2': number;
                     'test-option-1': string;
                     'test-option-2': boolean;
-                }>(pattern);
+                }>(pattern, true);
             };
 
             expect(execute).to.be.throw('3412: Insufficient argument');
