@@ -56,26 +56,42 @@ export class Parser {
 
         const result: { [P in keyof T]: any } = {} as { [P in keyof T]: any };
         const args: string[] = assert(cdr(raw)).exist().value();
-        args.reduce<string | null>((previous: string | null, arg: string): string | null => {
-            if (previous) {
-                result[previous as keyof T] = arg;
+        args.reduce<IPatternOption | null>(
+            (previous: IPatternOption | null, arg: string):
+                IPatternOption | null => {
+                if (previous) {
+                    result[previous.name as keyof T] = this.typeConvert(arg, previous.type);
+                    return null;
+                }
+
+                const current: PATTERN_RESULT = pattern.match(arg);
+                if (current.type === PATTERN_RESULT_TYPE.OPTION) {
+                    if (previous) throw error(ERROR_CODE.TWO_OPTION_IN_A_ROW);
+                    const value: IPatternOption = current.value;
+
+                    if (value.type === PATTERN_TYPE.BOOLEAN) result[value.name as keyof T] = true;
+                    else return value;
+                } else {
+                    const value: IPatternArg = current.value;
+                    result[value.name as keyof T] = this.typeConvert(arg, value.type);
+                }
                 return null;
-            }
-
-            const current: PATTERN_RESULT = pattern.match(arg);
-            if (current.type === PATTERN_RESULT_TYPE.OPTION) {
-                if (previous) throw error(ERROR_CODE.TWO_OPTION_IN_A_ROW);
-                const value: IPatternOption = current.value;
-
-                if (value.type === PATTERN_TYPE.BOOLEAN) result[value.name as keyof T] = true;
-                else return value.name;
-            } else {
-                const value: IPatternArg = current.value;
-                result[value.name as keyof T] = arg;
-            }
-            return null;
-        }, null);
+            }, null);
         return result;
+    }
+
+    protected typeConvert(value: string, type: PATTERN_TYPE): any {
+        switch (type) {
+            case PATTERN_TYPE.BOOLEAN:
+                return value.toLowerCase() === 'true';
+            case PATTERN_TYPE.FLOAT:
+                return parseFloat(value) || 0;
+            case PATTERN_TYPE.INTEGER:
+                return parseInt(value, 10) || 0;
+            case PATTERN_TYPE.STRING:
+            default:
+                return value;
+        }
     }
 }
 

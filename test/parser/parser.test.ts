@@ -81,15 +81,18 @@ describe('Given a <Parser> Class', (): void => {
     describe('args and command function', (): void => {
         it('should able to handle complex situation', (): void => {
             const str: string = chance.string();
-            const num: number = chance.integer();
+            const arg1: string = chance.string();
+            const arg2: number = chance.integer();
+            const option1: string = chance.string();
+
             const pattern: Pattern = createPattern('test');
             const list: any[] = [
                 str,
-                str,
+                arg1,
                 '-b',
-                num,
+                arg2,
                 '-s',
-                str,
+                option1,
             ];
 
             const parser: Parser = new Parser(list.join(' '));
@@ -104,7 +107,12 @@ describe('Given a <Parser> Class', (): void => {
                 'test-option-2': boolean;
             }>(pattern);
 
-            expect(args).to.be.deep.equal({});
+            expect(args).to.be.deep.equal({
+                'test-arg-1': arg1,
+                'test-arg-2': arg2,
+                'test-option-1': option1,
+                'test-option-2': true,
+            });
         });
     });
 });

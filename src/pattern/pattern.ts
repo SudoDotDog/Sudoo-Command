@@ -6,6 +6,7 @@
 
 import { IPatternArg, IPatternOption, PATTERN_RESULT, PATTERN_RESULT_TYPE, PATTERN_TYPE } from "#declare/pattern";
 import { assert } from "#util/assert";
+import { ERROR_CODE } from "#util/error";
 
 export class Pattern {
     private _args: IPatternArg[];
@@ -54,8 +55,7 @@ export class Pattern {
         }
 
         // arg
-        console.log(str, this._args);
-        const arg: IPatternArg = assert(this._args.shift()).exist().value();
+        const arg: IPatternArg = assert(this._args.shift()).exist(ERROR_CODE.INSUFFICIENT_ARGUMENT).value();
         return {
             type: PATTERN_RESULT_TYPE.ARG,
             value: arg,
