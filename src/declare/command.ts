@@ -4,7 +4,7 @@
  * @description Command
  */
 
-export interface ICommand {
+export interface IRawCommand {
     command: string;
     args: string[];
 }
