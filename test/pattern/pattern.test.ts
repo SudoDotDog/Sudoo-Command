@@ -5,7 +5,7 @@
  */
 
 require('../../src/binding');
-import { PATTERN_TYPE } from '#declare/pattern';
+import { PATTERN_RESULT_TYPE, PATTERN_TYPE } from '#declare/pattern';
 import { Pattern } from '#pattern/pattern';
 import { expect } from 'chai';
 import * as Chance from 'chance';
@@ -56,13 +56,19 @@ describe('Given a <Pattern> Class', (): void => {
             pattern.option(option2, '-b', PATTERN_TYPE.BOOLEAN);
 
             expect(pattern.match('hello')).to.be.deep.equal({
-                name: arg1,
-                type: PATTERN_TYPE.STRING,
+                type: PATTERN_RESULT_TYPE.ARG,
+                value: {
+                    name: arg1,
+                    type: PATTERN_TYPE.STRING,
+                },
             });
             expect(pattern.match('-b')).to.be.deep.equal({
-                name: option2,
-                symbol: '-b',
-                type: PATTERN_TYPE.BOOLEAN,
+                type: PATTERN_RESULT_TYPE.OPTION,
+                value: {
+                    name: option2,
+                    symbol: '-b',
+                    type: PATTERN_TYPE.BOOLEAN,
+                },
             });
         });
     });

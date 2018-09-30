@@ -4,7 +4,7 @@
  * @description Pattern
  */
 
-import { IPatternArg, IPatternOption, PATTERN_TYPE } from "#declare/pattern";
+import { IPatternArg, IPatternOption, PATTERN_RESULT, PATTERN_RESULT_TYPE, PATTERN_TYPE } from "#declare/pattern";
 import { assert } from "#util/assert";
 
 export class Pattern {
@@ -40,22 +40,26 @@ export class Pattern {
      * @returns {(IPatternOption | IPatternArg)}
      * @memberof Pattern
      */
-    public match(str: string): IPatternOption | IPatternArg {
+    public match(str: string): PATTERN_RESULT {
 
         // option
         for (let i: number = 0; i < this._options.length; i++) {
             const option: IPatternOption = this._options[i];
             if (option.symbol === str) {
-                return this._options.splice(i, 1)[0];
+                return {
+                    type: PATTERN_RESULT_TYPE.OPTION,
+                    value: this._options.splice(i, 1)[0],
+                };
             }
         }
 
         // arg
-        const arg: IPatternArg =
-            assert(this._args.shift())
-                .exist()
-                .value();
-        return arg;
+        console.log(str, this._args);
+        const arg: IPatternArg = assert(this._args.shift()).exist().value();
+        return {
+            type: PATTERN_RESULT_TYPE.ARG,
+            value: arg,
+        };
     }
 
     public clone(): Pattern {

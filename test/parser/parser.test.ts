@@ -5,7 +5,9 @@
  */
 
 require('../../src/binding');
+import { PATTERN_TYPE } from '#declare/pattern';
 import { Parser } from '#parser/parser';
+import { Pattern } from '#pattern/pattern';
 import { expect } from 'chai';
 import * as Chance from 'chance';
 
@@ -58,6 +60,51 @@ describe('Given a <Parser> Class', (): void => {
                     str, '-s', str, '-p', str,
                 ],
             });
+        });
+    });
+
+    const createPattern = (name: string): Pattern => {
+        const arg1: string = name + '-arg-1';
+        const arg2: string = name + '-arg-2';
+        const pattern: Pattern = new Pattern();
+        pattern.arg(arg1, PATTERN_TYPE.STRING);
+        pattern.arg(arg2, PATTERN_TYPE.INTEGER);
+
+        const option1: string = name + '-option-1';
+        const option2: string = name + '-option-2';
+        pattern.option(option1, '-s', PATTERN_TYPE.STRING);
+        pattern.option(option2, '-b', PATTERN_TYPE.BOOLEAN);
+
+        return pattern;
+    };
+
+    describe('args and command function', (): void => {
+        it('should able to handle complex situation', (): void => {
+            const str: string = chance.string();
+            const num: number = chance.integer();
+            const pattern: Pattern = createPattern('test');
+            const list: any[] = [
+                str,
+                str,
+                '-b',
+                num,
+                '-s',
+                str,
+            ];
+
+            const parser: Parser = new Parser(list.join(' '));
+            const command: string = parser.command();
+
+            expect(command).to.be.equal(str);
+
+            const args = parser.args<{
+                'test-arg-1': string;
+                'test-arg-2': number;
+                'test-option-1': string;
+                'test-option-2': boolean;
+            }>(pattern);
+
+            expect(args).to.be.deep.equal({});
         });
     });
 });
