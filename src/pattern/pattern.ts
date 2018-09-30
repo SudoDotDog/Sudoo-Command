@@ -6,15 +6,19 @@
 
 import { IPatternArg, IPatternOption, PATTERN_RESULT, PATTERN_RESULT_TYPE, PATTERN_TYPE } from "#declare/pattern";
 import { assert } from "#util/assert";
-import { ERROR_CODE } from "#util/error";
+import { error, ERROR_CODE } from "#util/error";
+
+interface IPatternOptionExtend extends IPatternOption {
+    used: boolean;
+}
 
 export class Pattern {
     private _args: IPatternArg[];
-    private _options: IPatternOption[];
+    private _options: IPatternOptionExtend[];
 
     public constructor(args?: IPatternArg[], options?: IPatternOption[]) {
         this._args = args ? [...args] : [];
-        this._options = options ? [...options] : [];
+        this._options = this._convert(options ? [...options] : []);
     }
 
     public arg(name: string, type: PATTERN_TYPE): Pattern {
@@ -30,6 +34,7 @@ export class Pattern {
             name,
             symbol,
             type,
+            used: false,
         });
         return this;
     }
@@ -44,12 +49,17 @@ export class Pattern {
     public match(str: string): PATTERN_RESULT {
 
         // option
-        for (let i: number = 0; i < this._options.length; i++) {
-            const option: IPatternOption = this._options[i];
+        for (const option of this._options) {
             if (option.symbol === str) {
+                if (option.used) throw error(ERROR_CODE.USED_OPTION);
+                option.used = true;
                 return {
                     type: PATTERN_RESULT_TYPE.OPTION,
-                    value: this._options.splice(i, 1)[0],
+                    value: {
+                        name: option.name,
+                        symbol: option.symbol,
+                        type: option.type,
+                    },
                 };
             }
         }
@@ -71,6 +81,21 @@ export class Pattern {
     }
 
     public getOptions(): IPatternOption[] {
-        return this._options;
+        return this._options.map((value: IPatternOptionExtend): IPatternOption => {
+            return {
+                name: value.name,
+                symbol: value.symbol,
+                type: value.type,
+            };
+        });
+    }
+
+    protected _convert(options: IPatternOption[]): IPatternOptionExtend[] {
+        return options.map((value: IPatternOption): IPatternOptionExtend => {
+            return {
+                ...value,
+                used: false,
+            };
+        });
     }
 }

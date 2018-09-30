@@ -114,5 +114,38 @@ describe('Given a <Parser> Class', (): void => {
                 'test-option-2': true,
             });
         });
+
+        it('should throw error when have doubled option', (): void => {
+            const str: string = chance.string();
+            const arg1: string = chance.string();
+            const arg2: number = chance.integer();
+            const option1: string = chance.string();
+
+            const pattern: Pattern = createPattern('test');
+            const list: any[] = [
+                str,
+                arg1,
+                '-b',
+                arg2,
+                '-b',
+                option1,
+            ];
+
+            const parser: Parser = new Parser(list.join(' '));
+            const command: string = parser.command();
+
+            expect(command).to.be.equal(str);
+
+            const execute = (): void => {
+                parser.args<{
+                    'test-arg-1': string;
+                    'test-arg-2': number;
+                    'test-option-1': string;
+                    'test-option-2': boolean;
+                }>(pattern);
+            };
+
+            expect(execute).to.be.throw('3425: Option is used');
+        });
     });
 });
