@@ -1,8 +1,13 @@
 # Builds
-src
 makefile
 typescript
 tsconfig.json
+
+# sources
+src
+
+# docs
+docs
 
 # Tests
 test
@@ -12,3 +17,7 @@ test
 .travis.yml
 .gitignore
 package-lock.json
+
+# temp
+.nyc_output
+coverage
