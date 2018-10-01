@@ -46,22 +46,22 @@ export class Parser {
     }
 
     public command(optionOnly?: boolean): string {
-        const raw: string[] = splitInput(this._input).map((input: IInput) => input.value);
+        const raw: IInput[] = splitInput(this._input);
         const emptyString: string = '';
 
         if (raw.length <= 0) return emptyString;
-        const command: string = assert(car(raw)).exist().value();
+        const command: string = assert(car(raw)).exist().value().value;
         if (optionOnly && command.substring(0, 1) === '-') return emptyString;
         return command;
     }
 
     public args<T>(pattern: Pattern, optionOnly?: boolean): { [P in keyof T]: any } {
-        const raw: string[] = splitInput(this._input).map((input: IInput) => input.value);
+        const raw: IInput[] = splitInput(this._input);
         const empty: { [P in keyof T]: any } = {} as { [P in keyof T]: any };
         if (raw.length <= 0) return empty;
 
         const command: string = this.command(optionOnly);
-        const args: string[] =
+        const args: IInput[] =
             command ?
                 assert(cdr(raw)).exist().value() :
                 assert(raw).exist().value();
@@ -69,7 +69,7 @@ export class Parser {
         const builder: Builder<T> = new Builder<T>();
         const reducer = this._createReducer<T>(builder, pattern);
         const overflow: IPatternOption | null = args.reduce<IPatternOption | null>(reducer, null);
-        if (overflow) throw error(ERROR_CODE.LAST_OPTION_NOT_FULFILLED);
+        if (overflow) throw error(ERROR_CODE.LAST_OPTION_NOT_FULFILLED_OVERFLOW);
 
         assert(pattern.verify()).to.be.true(ERROR_CODE.INSUFFICIENT_ARGUMENT);
         return builder.result;
@@ -78,16 +78,17 @@ export class Parser {
     protected _createReducer<T>(builder: Builder<T>, pattern: Pattern) {
         const reducer = (
             previous: IPatternOption | null,
-            arg: string,
+            arg: IInput,
             index: number,
-            array: string[],
+            array: IInput[],
         ): IPatternOption | null => {
             if (previous) {
-                builder.add(previous.name as keyof T, arg, previous.type);
+                if (pattern.isOption(arg)) throw error(ERROR_CODE.OPTION_VALUE_IS_A_SYMBOL);
+                builder.add(previous.name as keyof T, arg.value, previous.type);
                 return null;
             }
 
-            const current: PATTERN_RESULT = pattern.match(arg);
+            const current: PATTERN_RESULT = pattern.match(arg.value);
             if (current.type === PATTERN_RESULT_TYPE.OPTION) {
                 if (previous) throw error(ERROR_CODE.TWO_OPTION_IN_A_ROW);
                 const value: IPatternOption = current.value;
@@ -96,13 +97,13 @@ export class Parser {
                     builder.add(value.name as keyof T, 'true', PATTERN_TYPE.BOOLEAN);
                 } else {
                     if (index === array.length) {
-                        throw error(ERROR_CODE.LAST_OPTION_NOT_FULFILLED);
+                        throw error(ERROR_CODE.LAST_OPTION_NOT_FULFILLED_CONFLICT);
                     }
                     return value;
                 }
             } else {
                 const value: IPatternArg = current.value;
-                builder.add(value.name as keyof T, arg, value.type);
+                builder.add(value.name as keyof T, arg.value, value.type);
             }
             return null;
         };

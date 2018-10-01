@@ -44,21 +44,12 @@ describe('Given a <Parser> Class', (): void => {
 
         it('should return a parsed list of args', (): void => {
             const str: string = chance.string();
-            const strList: string[] = [
-                str,
-                str,
-                '-s',
-                str,
-                '-p',
-                str,
-            ];
+            const strList: string[] = [str, str, '-s', str, '-p', str];
             const parser: Parser = new Parser(strList.join(' '));
 
             expect(parser.raw()).to.be.deep.equal({
                 command: str,
-                args: [
-                    str, '-s', str, '-p', str,
-                ],
+                args: [str, '-s', str, '-p', str],
             });
         });
     });
@@ -85,14 +76,7 @@ describe('Given a <Parser> Class', (): void => {
             const option1: string = chance.string();
 
             const pattern: Pattern = createPattern('test');
-            const list: any[] = [
-                str,
-                '"test double"',
-                '-b',
-                arg2,
-                '-s',
-                option1,
-            ];
+            const list: any[] = [str, '"test double"', '-b', arg2, '-s', option1];
 
             const parser: Parser = new Parser(list.join(' '));
             const command: string = parser.command(true);
@@ -120,11 +104,7 @@ describe('Given a <Parser> Class', (): void => {
             const pattern: Pattern = new Pattern();
             pattern.option('boolean', '-b', PATTERN_TYPE.BOOLEAN);
             pattern.option('string', '-s', PATTERN_TYPE.STRING);
-            const list: any[] = [
-                '-b',
-                '-s',
-                option1,
-            ];
+            const list: any[] = ['-b', '-s', option1];
 
             const parser: Parser = new Parser(list.join(' '));
             const command: string = parser.command(true);
@@ -149,14 +129,7 @@ describe('Given a <Parser> Class', (): void => {
             const option1: string = chance.string();
 
             const pattern: Pattern = createPattern('test');
-            const list: any[] = [
-                str,
-                arg1,
-                '-b',
-                arg2,
-                '-b',
-                option1,
-            ];
+            const list: any[] = [str, arg1, '-b', arg2, '-b', option1];
 
             const parser: Parser = new Parser(list.join(' '));
             const command: string = parser.command(true);
@@ -175,19 +148,54 @@ describe('Given a <Parser> Class', (): void => {
             expect(execute).to.be.throw('3425: Option is used');
         });
 
+        it('should throw error when option value is another option', (): void => {
+            const str: string = chance.string();
+
+            const pattern: Pattern = new Pattern();
+            pattern.option('hello', '-h', PATTERN_TYPE.STRING);
+            pattern.option('c', '-c', PATTERN_TYPE.STRING);
+            pattern.option('d', '-d', PATTERN_TYPE.STRING);
+            const list: any[] = [str, '-c', 'c', '-d', '-h'];
+
+            const parser: Parser = new Parser(list.join(' '));
+            const command: string = parser.command(true);
+
+            expect(command).to.be.equal(str);
+
+            const execute = (): void => {
+                parser.args<any>(pattern, true);
+            };
+
+            expect(execute).to.be.throw('3519: Option value is a symbol');
+        });
+
+        it('should throw error when last option is not fulfilled', (): void => {
+            const str: string = chance.string();
+
+            const pattern: Pattern = new Pattern();
+            pattern.option('hello', '-h', PATTERN_TYPE.STRING);
+            pattern.option('c', '-c', PATTERN_TYPE.STRING);
+            const list: any[] = [str, '-c', 'c', '-h'];
+
+            const parser: Parser = new Parser(list.join(' '));
+            const command: string = parser.command(true);
+
+            expect(command).to.be.equal(str);
+
+            const execute = (): void => {
+                parser.args<any>(pattern, true);
+            };
+
+            expect(execute).to.be.throw('3518: Last option cannot be fulfilled (overflow)');
+        });
+
         it('should throw error when args is not enough', (): void => {
             const str: string = chance.string();
             const arg1: string = chance.string();
             const option1: string = chance.string();
 
             const pattern: Pattern = createPattern('test');
-            const list: any[] = [
-                str,
-                arg1,
-                '-b',
-                '-s',
-                option1,
-            ];
+            const list: any[] = [str, arg1, '-b', '-s', option1];
 
             const parser: Parser = new Parser(list.join(' '));
             const command: string = parser.command(true);

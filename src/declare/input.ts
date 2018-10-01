@@ -6,5 +6,5 @@
 
 export interface IInput {
     value: string;
-    native: boolean;
+    plainText: boolean;
 }

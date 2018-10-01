@@ -4,6 +4,7 @@
  * @description Pattern
  */
 
+import { IInput } from "#declare/input";
 import { IPatternArg, IPatternOption, PATTERN_RESULT, PATTERN_RESULT_TYPE, PATTERN_TYPE } from "#declare/pattern";
 import { assert } from "#util/assert";
 import { error, ERROR_CODE } from "#util/error";
@@ -39,9 +40,12 @@ export class Pattern {
         return this;
     }
 
-    public isOption(name: string): boolean {
+    public isOption(input: IInput): boolean {
         for (const option of this._options) {
-            if (option.symbol === name) {
+            if (
+                option.symbol === input.value
+                && !input.plainText
+            ) {
                 return true;
             }
         }

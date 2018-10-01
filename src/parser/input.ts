@@ -17,12 +17,12 @@ export const splitInput: (input: string) => IInput[] =
                 ) {
                     return {
                         value: str.substring(1, str.length - 1),
-                        native: true,
+                        plainText: true,
                     };
                 } else {
                     return {
                         value: str,
-                        native: false,
+                        plainText: false,
                     };
                 }
             })
