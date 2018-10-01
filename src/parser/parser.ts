@@ -73,8 +73,12 @@ export class Parser {
     }
 
     protected _createReducer<T>(builder: Builder<T>, pattern: Pattern) {
-        const reducer = (previous: IPatternOption | null, arg: string):
-            IPatternOption | null => {
+        const reducer = (
+            previous: IPatternOption | null,
+            arg: string,
+            index: number,
+            array: string[],
+        ): IPatternOption | null => {
             if (previous) {
                 builder.add(previous.name as keyof T, arg, previous.type);
                 return null;
@@ -87,7 +91,12 @@ export class Parser {
 
                 if (value.type === PATTERN_TYPE.BOOLEAN) {
                     builder.add(value.name as keyof T, 'true', PATTERN_TYPE.BOOLEAN);
-                } else return value;
+                } else {
+                    if (index === array.length) {
+                        throw error(ERROR_CODE.LAST_OPTION_NOT_FULFILLED);
+                    }
+                    return value;
+                }
             } else {
                 const value: IPatternArg = current.value;
                 builder.add(value.name as keyof T, arg, value.type);

@@ -9,6 +9,7 @@ export enum ERROR_CODE {
     INSUFFICIENT_ARGUMENT = 3412,
     USED_OPTION = 3425,
     TWO_OPTION_IN_A_ROW = 3516,
+    LAST_OPTION_NOT_FULFILLED = 3517,
     INTERNAL_ERROR = 9001,
 }
 
@@ -19,6 +20,7 @@ export const errorList: {
     3412: 'Insufficient argument',
     3425: 'Option is used',
     3516: 'Two option symbol in a row',
+    3517: 'Last option cannot be fulfilled',
     9001: 'Internal error',
 };
 
