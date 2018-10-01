@@ -5,6 +5,7 @@
  */
 
 import { IRawCommand } from "#declare/command";
+import { IInput } from "#declare/input";
 import { IPatternArg, IPatternOption, PATTERN_RESULT, PATTERN_RESULT_TYPE, PATTERN_TYPE } from "#declare/pattern";
 import { Builder } from "#parser/builder";
 import { splitInput } from "#parser/input";
@@ -25,7 +26,7 @@ export class Parser {
     }
 
     public raw(): IRawCommand {
-        const raw: string[] = splitInput(this._input);
+        const raw: string[] = splitInput(this._input).map((input: IInput) => input.value);
         const emptyString: string = '';
 
         if (raw.length <= 0) {
@@ -45,7 +46,7 @@ export class Parser {
     }
 
     public command(optionOnly?: boolean): string {
-        const raw: string[] = splitInput(this._input);
+        const raw: string[] = splitInput(this._input).map((input: IInput) => input.value);
         const emptyString: string = '';
 
         if (raw.length <= 0) return emptyString;
@@ -55,7 +56,7 @@ export class Parser {
     }
 
     public args<T>(pattern: Pattern, optionOnly?: boolean): { [P in keyof T]: any } {
-        const raw: string[] = splitInput(this._input);
+        const raw: string[] = splitInput(this._input).map((input: IInput) => input.value);
         const empty: { [P in keyof T]: any } = {} as { [P in keyof T]: any };
         if (raw.length <= 0) return empty;
 
