@@ -16,6 +16,7 @@ export interface IOption {
     options?: {
         [key: string]: {
             name?: string;
+            symbol?: string;
             type: PATTERN_TYPE;
         };
     };

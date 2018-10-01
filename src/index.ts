@@ -7,7 +7,7 @@ require('./binding');
 import { IOption } from '#declare/option';
 import { Parser } from '#parser/parser';
 import { Pattern } from '#pattern/pattern';
-import { isArray } from 'util';
+import { isObject } from 'util';
 
 export const SCommand = (input: string, optionOnly?: boolean): string => {
     const parser = new Parser(input);
@@ -19,9 +19,10 @@ export const SArgs = <T>(
     option: IOption,
 ): T => {
     const pattern: Pattern = new Pattern();
-    if (option.args && isArray(option.args)) {
+    if (option.args && isObject(option.args)) {
         for (const key of Object.keys(option.args)) {
             if (option.args[key].type) {
+
                 pattern.arg(
                     key,
                     option.args[key].type,
@@ -30,12 +31,12 @@ export const SArgs = <T>(
         }
     }
 
-    if (option.options && isArray(option.options)) {
+    if (option.options && isObject(option.options)) {
         for (const key of Object.keys(option.options)) {
             if (option.options[key].type) {
                 pattern.option(
-                    key,
                     option.options[key].name || key,
+                    option.options[key].symbol || key,
                     option.options[key].type,
                 );
             }
@@ -47,3 +48,4 @@ export const SArgs = <T>(
 };
 
 export { Parser as SParser, Pattern as SPattern, IOption as ISArgsOption };
+
