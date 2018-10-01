@@ -68,7 +68,9 @@ export class Parser {
 
         const builder: Builder<T> = new Builder<T>();
         const reducer = this._createReducer<T>(builder, pattern);
-        args.reduce<IPatternOption | null>(reducer, null);
+        const overflow: IPatternOption | null = args.reduce<IPatternOption | null>(reducer, null);
+        if (overflow) throw error(ERROR_CODE.LAST_OPTION_NOT_FULFILLED);
+
         assert(pattern.verify()).to.be.true(ERROR_CODE.INSUFFICIENT_ARGUMENT);
         return builder.result;
     }
