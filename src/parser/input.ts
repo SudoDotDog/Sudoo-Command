@@ -4,7 +4,7 @@
  * @description Input
  */
 
-import { IInput } from "#declare/input";
+import { IInput } from "../declare/input";
 
 export const splitInput: (input: string) => IInput[] =
     (input: string): IInput[] =>

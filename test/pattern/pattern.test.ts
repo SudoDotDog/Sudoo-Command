@@ -4,11 +4,10 @@
  * @description Pattern Test
  */
 
-require('../../src/binding');
-import { PATTERN_RESULT_TYPE, PATTERN_TYPE } from '#declare/pattern';
-import { Pattern } from '#pattern/pattern';
 import { expect } from 'chai';
 import * as Chance from 'chance';
+import { PATTERN_RESULT_TYPE, PATTERN_TYPE } from '../../src/declare/pattern';
+import { Pattern } from '../../src/pattern/pattern';
 
 describe('Given a <Pattern> Class', (): void => {
     const chance: Chance.Chance = new Chance('test-pattern-pattern');

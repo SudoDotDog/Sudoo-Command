@@ -4,12 +4,11 @@
  * @description Parser Test
  */
 
-require('../../src/binding');
-import { PATTERN_TYPE } from '#declare/pattern';
-import { Parser } from '#parser/parser';
-import { Pattern } from '#pattern/pattern';
 import { expect } from 'chai';
 import * as Chance from 'chance';
+import { PATTERN_TYPE } from '../../src/declare/pattern';
+import Parser from '../../src/parser/parser';
+import { Pattern } from '../../src/pattern/pattern';
 
 describe('Given a <Parser> Class', (): void => {
     const chance: Chance.Chance = new Chance('test-parser-parser');

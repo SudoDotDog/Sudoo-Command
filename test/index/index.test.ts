@@ -4,10 +4,9 @@
  * @description Index Test
  */
 
-require('../../src/binding');
-import { PATTERN_TYPE } from '#declare/pattern';
 import { expect } from 'chai';
 import * as Chance from 'chance';
+import { PATTERN_TYPE } from '../../src/declare/pattern';
 import { SArgs, SCommand } from '../../src/index';
 
 describe('Given a <Index> function', (): void => {

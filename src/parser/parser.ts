@@ -4,15 +4,16 @@
  * @description Parser
  */
 
-import { IRawCommand } from "#declare/command";
-import { IInput } from "#declare/input";
-import { IPatternArg, IPatternOption, PATTERN_RESULT, PATTERN_RESULT_TYPE, PATTERN_TYPE } from "#declare/pattern";
-import { Builder } from "#parser/builder";
-import { splitInput } from "#parser/input";
-import { Pattern } from "#pattern/pattern";
-import { car, cdr } from "#util/array";
-import { assert } from "#util/assert";
-import { error, ERROR_CODE } from "#util/error";
+
+import { IRawCommand } from "../declare/command";
+import { IInput } from "../declare/input";
+import { IPatternArg, IPatternOption, PATTERN_RESULT, PATTERN_RESULT_TYPE, PATTERN_TYPE } from "../declare/pattern";
+import { Pattern } from "../pattern/pattern";
+import { car, cdr } from "../util/array";
+import { assert } from "../util/assert";
+import { error, ERROR_CODE } from "../util/error";
+import { Builder } from "./builder";
+import { splitInput } from "./input";
 
 export class Parser {
     private _input: string;

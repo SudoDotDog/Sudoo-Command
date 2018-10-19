@@ -4,7 +4,7 @@
  * @description Builder
  */
 
-import { PATTERN_TYPE } from "#declare/pattern";
+import { PATTERN_TYPE } from "../declare/pattern";
 
 export class Builder<T> {
     private _result: { [P in keyof T]: any };

@@ -3,11 +3,10 @@
  * @description Sudoo Command
  */
 
-require('./binding');
-import { IOption } from '#declare/option';
-import { Parser } from '#parser/parser';
-import { Pattern } from '#pattern/pattern';
 import { isObject } from 'util';
+import { IOption } from './declare/option';
+import Parser from './parser/parser';
+import { Pattern } from './pattern/pattern';
 
 export const SCommand = (input: string, optionOnly?: boolean): string => {
     const parser = new Parser(input);

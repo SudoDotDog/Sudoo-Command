@@ -4,7 +4,7 @@
  * @description Assert
  */
 
-import { error, ERROR_CODE } from "#util/error";
+import { error, ERROR_CODE } from "./error";
 
 class Assert<T> {
     private _element: T | undefined;

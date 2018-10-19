@@ -4,7 +4,7 @@
  * @description Option
  */
 
-import { PATTERN_TYPE } from "#declare/pattern";
+import { PATTERN_TYPE } from "./pattern";
 
 export interface IOption {
     optionOnly?: boolean;
