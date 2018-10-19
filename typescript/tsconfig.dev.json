@@ -2,7 +2,6 @@
     "compileOnSave": false,
     "compilerOptions": {
         "alwaysStrict": true,
-        "baseUrl": "../src",
         "downlevelIteration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
@@ -17,12 +16,6 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "outDir": "../dist",
-        "paths": {
-            "#declare/*": ["declare/*"],
-            "#parser/*": ["parser/*"],
-            "#pattern/*": ["pattern/*"],
-            "#util/*": ["util/*"],
-        },
         "removeComments": true,
         "resolveJsonModule": true,
         "strict": true,

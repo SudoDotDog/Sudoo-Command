@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SudoDotDog/Sudoo-Core.git"
+    "url": "git+https://github.com/SudoDotDog/Sudoo-Command.git"
   },
   "author": "WMXPY",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SudoDotDog/Sudoo-Core/issues"
+    "url": "https://github.com/SudoDotDog/Sudoo-Command/issues"
   },
-  "homepage": "https://github.com/SudoDotDog/Sudoo-Core#readme",
+  "homepage": "https://github.com/SudoDotDog/Sudoo-Command#readme",
   "dependencies": {
     "chance": "^1.0.16",
     "module-alias": "^2.1.0"
