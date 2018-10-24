@@ -49,8 +49,13 @@ export const SArgs = <T>(
         }
     }
 
+    if (option.rest) {
+
+        pattern.setRest(option.rest);
+    }
+
     const parser: Parser = new Parser(input);
-    return parser.args<T>(pattern, option.optionOnly);
+    return parser.args<T>(pattern, option.optionOnly, option.rest);
 };
 
 export { Parser as SParser, Pattern as SPattern, IOption as ISArgsOption };

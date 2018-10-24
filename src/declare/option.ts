@@ -8,7 +8,7 @@ import { PATTERN_TYPE } from "./pattern";
 
 export interface IOption {
     optionOnly?: boolean;
-    rest?: boolean;
+    rest?: string;
     args?: {
         [key: string]: {
             type: PATTERN_TYPE;

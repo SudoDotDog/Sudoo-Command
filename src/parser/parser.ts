@@ -4,7 +4,6 @@
  * @description Parser
  */
 
-
 import { IRawCommand } from "../declare/command";
 import { IInput } from "../declare/input";
 import { IPatternArg, IPatternOption, PATTERN_RESULT, PATTERN_RESULT_TYPE, PATTERN_TYPE } from "../declare/pattern";
@@ -16,17 +15,21 @@ import { Builder } from "./builder";
 import { splitInput } from "./input";
 
 export class Parser {
+
     private _input: string;
 
     public constructor(input: string) {
+
         this._input = input;
     }
 
     public get input(): string {
+
         return this._input;
     }
 
     public raw(): IRawCommand {
+
         const raw: string[] = splitInput(this._input).map((input: IInput) => input.value);
         const emptyString: string = '';
 
@@ -47,6 +50,7 @@ export class Parser {
     }
 
     public command(optionOnly?: boolean): string {
+
         const raw: IInput[] = splitInput(this._input);
         const emptyString: string = '';
 
@@ -56,7 +60,8 @@ export class Parser {
         return command;
     }
 
-    public args<T>(pattern: Pattern, optionOnly?: boolean): { [P in keyof T]: any } {
+    public args<T>(pattern: Pattern, optionOnly?: boolean, rest?: string): { [P in keyof T]: any } {
+
         const raw: IInput[] = splitInput(this._input);
         const empty: { [P in keyof T]: any } = {} as { [P in keyof T]: any };
         if (raw.length <= 0) return empty;
@@ -67,16 +72,18 @@ export class Parser {
                 assert(cdr(raw)).exist().value() :
                 assert(raw).exist().value();
 
-        const builder: Builder<T> = new Builder<T>();
+        const builder: Builder<T> = new Builder<T>(rest);
         const reducer = this._createReducer<T>(builder, pattern);
         const overflow: IPatternOption | null = args.reduce<IPatternOption | null>(reducer, null);
         if (overflow) throw error(ERROR_CODE.LAST_OPTION_NOT_FULFILLED_OVERFLOW);
 
         assert(pattern.verify()).to.be.true(ERROR_CODE.INSUFFICIENT_ARGUMENT);
-        return builder.result;
+        const result: { [P in keyof T]: any } = builder.result;
+        return result;
     }
 
     protected _createReducer<T>(builder: Builder<T>, pattern: Pattern) {
+
         const reducer = (
             previous: IPatternOption | null,
             arg: IInput,
@@ -95,6 +102,7 @@ export class Parser {
                 const value: IPatternOption = current.value;
 
                 if (value.type === PATTERN_TYPE.BOOLEAN) {
+
                     builder.add(value.name as keyof T, 'true', PATTERN_TYPE.BOOLEAN);
                 } else {
                     if (index === array.length) {
@@ -102,9 +110,15 @@ export class Parser {
                     }
                     return value;
                 }
-            } else {
+            } else if (current.type === PATTERN_RESULT_TYPE.ARG) {
+
                 const value: IPatternArg = current.value;
                 builder.add(value.name as keyof T, arg.value, value.type);
+
+            } else if (current.type === PATTERN_RESULT_TYPE.REST) {
+
+                const value: string = arg.value;
+                builder.rest(value);
             }
             return null;
         };

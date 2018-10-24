@@ -17,11 +17,18 @@ export class Pattern {
 
     private _args: IPatternArg[];
     private _options: IPatternOptionExtend[];
+    private _rest: string | null;
 
     public constructor(args?: IPatternArg[], options?: IPatternOption[]) {
 
         this._args = args ? [...args] : [];
         this._options = this._convert(options ? [...options] : []);
+        this._rest = null;
+    }
+
+    public get current(): IPatternArg[] {
+
+        return this._args;
     }
 
     public arg(name: string, type: PATTERN_TYPE): Pattern {
@@ -84,16 +91,24 @@ export class Pattern {
             }
         }
 
-        // arg
-        const arg: IPatternArg = assert(this._args.shift()).exist(ERROR_CODE.INSUFFICIENT_ARGUMENT).value();
-        return {
-            type: PATTERN_RESULT_TYPE.ARG,
-            value: arg,
-        };
+        const arg: IPatternArg | undefined = this._args.shift();
+
+        if (arg) {
+            return {
+                type: PATTERN_RESULT_TYPE.ARG,
+                value: arg,
+            };
+        } else {
+            if (!this._rest) throw error(ERROR_CODE.INSUFFICIENT_ARGUMENT);
+            return {
+                type: PATTERN_RESULT_TYPE.REST,
+            };
+        }
     }
 
     public verify(): boolean {
 
+        if (this._rest) return true;
         return this._args.length === 0;
     }
 
@@ -117,6 +132,12 @@ export class Pattern {
                 type: value.type,
             };
         });
+    }
+
+    public setRest(rest: string): Pattern {
+
+        this._rest = rest;
+        return this;
     }
 
     protected _convert(options: IPatternOption[]): IPatternOptionExtend[] {

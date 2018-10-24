@@ -79,16 +79,21 @@ describe('Given a <Index> function', (): void => {
 
     describe('test index with rest activated SArgs', (): void => {
         it('should can return correct command', (): void => {
+
             const command: string = chance.string();
             const arg1: string = chance.string();
+            const restName: string = chance.string();
+            const restArg: string = chance.string();
 
-            const result = SArgs(`${command} ${arg1}`, {
+            const result = SArgs(`${command} ${arg1} ${restArg}`, {
+                rest: restName,
                 args: {
                     hello: { type: PATTERN_TYPE.STRING },
                 },
             });
             expect(result).to.be.deep.equal({
                 hello: arg1,
+                [restName]: [restArg],
             });
         });
 

@@ -12,6 +12,7 @@ export enum ERROR_CODE {
     LAST_OPTION_NOT_FULFILLED_CONFLICT = 3517,
     LAST_OPTION_NOT_FULFILLED_OVERFLOW = 3518,
     OPTION_VALUE_IS_A_SYMBOL = 3519,
+    REST_NOT_ACTIVATED = 3520,
     INTERNAL_ERROR = 9001,
 }
 
@@ -25,6 +26,7 @@ export const errorList: {
     3517: 'Last option cannot be fulfilled (conflict)',
     3518: 'Last option cannot be fulfilled (overflow)',
     3519: 'Option value is a symbol',
+    3520: 'Rest not activated',
     9001: 'Internal error',
 };
 

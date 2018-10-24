@@ -7,6 +7,7 @@
 export enum PATTERN_RESULT_TYPE {
     ARG = 'ARG',
     OPTION = 'OPTION',
+    REST = 'REST',
 }
 
 export enum PATTERN_TYPE {
@@ -22,6 +23,8 @@ export type PATTERN_RESULT = {
 } | {
     type: PATTERN_RESULT_TYPE.OPTION,
     value: IPatternOption,
+} | {
+    type: PATTERN_RESULT_TYPE.REST,
 };
 
 export interface IPatternArg {
