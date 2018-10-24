@@ -76,4 +76,46 @@ describe('Given a <Index> function', (): void => {
             });
         });
     });
+
+    describe('test index with rest activated SArgs', (): void => {
+        it('should can return correct command', (): void => {
+            const command: string = chance.string();
+            const arg1: string = chance.string();
+
+            const result = SArgs(`${command} ${arg1}`, {
+                args: {
+                    hello: { type: PATTERN_TYPE.STRING },
+                },
+            });
+            expect(result).to.be.deep.equal({
+                hello: arg1,
+            });
+        });
+
+        it('should can return correct options', (): void => {
+            const command: string = chance.string();
+            const option1: string = chance.string();
+            const option2: string = chance.string();
+            const option3: string = chance.string();
+
+            const result = SArgs(`${command} -b ${option1} -c ${option2} -w ${option3}`, {
+                options: {
+                    '-b': { type: PATTERN_TYPE.STRING },
+                    '-c': {
+                        name: 'hello',
+                        type: PATTERN_TYPE.STRING,
+                    },
+                    'world': {
+                        symbol: '-w',
+                        type: PATTERN_TYPE.STRING,
+                    },
+                },
+            });
+            expect(result).to.be.deep.equal({
+                'hello': option2,
+                'world': option3,
+                '-b': option1,
+            });
+        });
+    });
 });

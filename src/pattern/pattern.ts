@@ -14,15 +14,18 @@ interface IPatternOptionExtend extends IPatternOption {
 }
 
 export class Pattern {
+
     private _args: IPatternArg[];
     private _options: IPatternOptionExtend[];
 
     public constructor(args?: IPatternArg[], options?: IPatternOption[]) {
+
         this._args = args ? [...args] : [];
         this._options = this._convert(options ? [...options] : []);
     }
 
     public arg(name: string, type: PATTERN_TYPE): Pattern {
+
         this._args.push({
             name,
             type,
@@ -31,6 +34,7 @@ export class Pattern {
     }
 
     public option(name: string, symbol: string, type: PATTERN_TYPE): Pattern {
+
         this._options.push({
             name,
             symbol,
@@ -41,6 +45,7 @@ export class Pattern {
     }
 
     public isOption(input: IInput): boolean {
+
         for (const option of this._options) {
             if (
                 option.symbol === input.value
@@ -64,6 +69,7 @@ export class Pattern {
 
         // option
         for (const option of this._options) {
+
             if (option.symbol === str) {
                 if (option.used) throw error(ERROR_CODE.USED_OPTION);
                 option.used = true;
@@ -87,19 +93,24 @@ export class Pattern {
     }
 
     public verify(): boolean {
+
         return this._args.length === 0;
     }
 
     public clone(): Pattern {
+
         return new Pattern(this._args, this._options);
     }
 
     public getArgs(): IPatternArg[] {
+
         return this._args;
     }
 
     public getOptions(): IPatternOption[] {
+
         return this._options.map((value: IPatternOptionExtend): IPatternOption => {
+
             return {
                 name: value.name,
                 symbol: value.symbol,
@@ -109,7 +120,9 @@ export class Pattern {
     }
 
     protected _convert(options: IPatternOption[]): IPatternOptionExtend[] {
+
         return options.map((value: IPatternOption): IPatternOptionExtend => {
+
             return {
                 ...value,
                 used: false,
